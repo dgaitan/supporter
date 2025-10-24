@@ -6,22 +6,22 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class CategoryObserver
+class CategoryObserver extends BaseObserver
 {
 
     public function creating(Category $category): void
     {
-        $category->created_by = $this->getUser()?->id;
+        $category->created_by = $this->getCurrentUser()?->id;
     }
 
     public function updating(Category $category): void
     {
-        $category->updated_by = $this->getUser()?->id;
+        $category->updated_by = $this->getCurrentUser()?->id;
     }
 
     public function deleting(Category $category): void
     {
-        $category->deleted_by = $this->getUser()?->id;
+        $category->deleted_by = $this->getCurrentUser()?->id;
     }
 
     /**
@@ -62,15 +62,5 @@ class CategoryObserver
     public function forceDeleted(Category $category): void
     {
         //
-    }
-
-    /**
-     * Get the current user
-     *
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
-        return Auth::user();
     }
 }
